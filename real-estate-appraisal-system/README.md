@@ -199,6 +199,8 @@ Trained and evaluated on an 80/20 train/test split of the sample dataset:
 
 ---
 
+INTERN ID - CITS6083
+
 ## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.

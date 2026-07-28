@@ -1,0 +1,63 @@
+{
+  "best_model": "Gradient Boosting",
+  "results": {
+    "Linear Regression": {
+      "MAE": 28113.09064613482,
+      "RMSE": 39901.00434523225,
+      "R2": 0.9280072496033913
+    },
+    "Random Forest": {
+      "MAE": 32203.916980366535,
+      "RMSE": 42329.401464695715,
+      "R2": 0.9189775510249921
+    },
+    "Gradient Boosting": {
+      "MAE": 21107.960644272902,
+      "RMSE": 28330.525417394714,
+      "R2": 0.9637063732320854
+    }
+  },
+  "numeric_features": [
+    "square_footage",
+    "bedrooms",
+    "bathrooms",
+    "lot_size",
+    "house_age",
+    "distance_to_city_center",
+    "garage_spaces",
+    "has_pool",
+    "has_garden",
+    "school_rating",
+    "crime_rate",
+    "renovated",
+    "rooms_total",
+    "lot_to_house_ratio",
+    "amenity_score",
+    "is_new"
+  ],
+  "categorical_features": [
+    "neighborhood_quality",
+    "condition",
+    "property_type"
+  ],
+  "categorical_options": {
+    "neighborhood_quality": [
+      "High",
+      "Low",
+      "Medium",
+      "Premium"
+    ],
+    "condition": [
+      "Excellent",
+      "Fair",
+      "Good",
+      "Poor"
+    ],
+    "property_type": [
+      "Condo",
+      "Multi-Family",
+      "Single Family",
+      "Townhouse"
+    ]
+  }
+}

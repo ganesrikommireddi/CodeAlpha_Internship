@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banking System Pro</title>
+<style>
+body{
+margin:0;
+font-family:Segoe UI,sans-serif;
+background:linear-gradient(135deg,#0f172a,#1e3a8a,#06b6d4);
+min-height:100vh;
+padding:25px;
+color:white;
+}
+.container{
+max-width:1200px;
+margin:auto;
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(12px);
+padding:25px;
+border-radius:20px;
+}
+h1{text-align:center;}
+.form{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:12px;
+}
+input,button{
+padding:12px;
+border:none;
+border-radius:10px;
+font-size:15px;
+}
+button{
+background:#22c55e;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+.cards{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-top:20px;
+}
+.card{
+background:rgba(255,255,255,.15);
+padding:15px;
+border-radius:15px;
+text-align:center;
+}
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+background:white;
+color:black;
+overflow:hidden;
+border-radius:15px;
+}
+th,td{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:center;
+}
+th{
+background:#1e40af;
+color:white;
+}
+.actionBtn{
+background:#2563eb;
+color:white;
+padding:8px 12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+@media(max-width:700px){
+.cards{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>🏦 Banking System Pro</h1>
+
+<div class="form">
+<input id="name" placeholder="Customer Name">
+<input id="account" placeholder="Account Number">
+<input id="amount" type="number" placeholder="Initial Deposit">
+<button onclick="createAccount()">Create Account</button>
+</div>
+
+<div class="cards">
+<div class="card">
+<h3>Total Accounts</h3>
+<h2 id="accounts">0</h2>
+</div>
+
+<div class="card">
+<h3>Total Bank Balance</h3>
+<h2 id="totalBalance">₹0</h2>
+</div>
+
+<div class="card">
+<h3>Richest Customer</h3>
+<h2 id="richest">-</h2>
+</div>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Account No</th>
+<th>Balance</th>
+<th>Deposit ₹1000</th>
+</tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+
+</div>
+
+<script>
+let customers=[];
+
+function createAccount(){
+const name=document.getElementById("name").value.trim();
+const account=document.getElementById("account").value.trim();
+const amount=parseFloat(document.getElementById("amount").value);
+
+if(!name || !account || isNaN(amount)){
+alert("Please fill all fields.");
+return;
+}
+
+customers.push({name,account,balance:amount});
+render();
+
+document.getElementById("name").value="";
+document.getElementById("account").value="";
+document.getElementById("amount").value="";
+}
+
+function deposit(index){
+customers[index].balance += 1000;
+render();
+}
+
+function render(){
+const body=document.getElementById("tableBody");
+body.innerHTML="";
+
+customers.forEach((c,i)=>{
+body.innerHTML += `
+<tr>
+<td>${c.name}</td>
+<td>${c.account}</td>
+<td>₹${c.balance.toLocaleString()}</td>
+<td><button class="actionBtn" onclick="deposit(${i})">Deposit</button></td>
+</tr>`;
+});
+
+document.getElementById("accounts").innerText=customers.length;
+
+const total=customers.reduce((sum,c)=>sum+c.balance,0);
+document.getElementById("totalBalance").innerText="₹"+total.toLocaleString();
+
+if(customers.length){
+const rich=customers.reduce((a,b)=>a.balance>b.balance?a:b);
+document.getElementById("richest").innerText=rich.name;
+}else{
+document.getElementById("richest").innerText="-";
+}
+}
+</script>
+
+</body>
+</html>

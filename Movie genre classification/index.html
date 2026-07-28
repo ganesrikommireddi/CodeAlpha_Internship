@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Employee Payroll System Pro</title>
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#0f766e,#06b6d4);
+padding:25px;
+color:white;
+min-height:100vh;
+}
+.container{
+max-width:1200px;
+margin:auto;
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(12px);
+padding:25px;
+border-radius:20px;
+}
+h1{text-align:center;}
+.form{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:12px;
+}
+input,button{
+padding:12px;
+border:none;
+border-radius:10px;
+font-size:15px;
+}
+button{
+background:#22c55e;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+.cards{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-top:20px;
+}
+.card{
+background:rgba(255,255,255,.15);
+padding:15px;
+border-radius:15px;
+text-align:center;
+}
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+background:white;
+color:black;
+border-radius:15px;
+overflow:hidden;
+}
+th,td{
+padding:12px;
+border-bottom:1px solid #ddd;
+text-align:center;
+}
+th{
+background:#0f766e;
+color:white;
+}
+.actionBtn{
+background:#ef4444;
+color:white;
+padding:8px 12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+@media(max-width:700px){
+.cards{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h1>💼 Employee Payroll System Pro</h1>
+
+<div class="form">
+<input id="name" placeholder="Employee Name">
+<input id="id" placeholder="Employee ID">
+<input id="salary" type="number" placeholder="Basic Salary">
+<input id="bonus" type="number" placeholder="Bonus">
+<button onclick="addEmployee()">Generate Payroll</button>
+</div>
+
+<div class="cards">
+<div class="card">
+<h3>Total Employees</h3>
+<h2 id="total">0</h2>
+</div>
+
+<div class="card">
+<h3>Total Payroll</h3>
+<h2 id="payroll">₹0</h2>
+</div>
+
+<div class="card">
+<h3>Highest Paid</h3>
+<h2 id="top">-</h2>
+</div>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>ID</th>
+<th>Salary</th>
+<th>Bonus</th>
+<th>Net Pay</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody id="tableBody"></tbody>
+</table>
+
+</div>
+
+<script>
+let employees=[];
+
+function addEmployee(){
+const name=document.getElementById("name").value.trim();
+const id=document.getElementById("id").value.trim();
+const salary=parseFloat(document.getElementById("salary").value);
+const bonus=parseFloat(document.getElementById("bonus").value) || 0;
+
+if(!name || !id || isNaN(salary)){
+alert("Please fill all required fields.");
+return;
+}
+
+const netPay = salary + bonus;
+
+employees.push({name,id,salary,bonus,netPay});
+
+document.getElementById("name").value="";
+document.getElementById("id").value="";
+document.getElementById("salary").value="";
+document.getElementById("bonus").value="";
+
+render();
+}
+
+function removeEmployee(index){
+employees.splice(index,1);
+render();
+}
+
+function render(){
+const body=document.getElementById("tableBody");
+body.innerHTML="";
+
+employees.forEach((e,index)=>{
+body.innerHTML += `
+<tr>
+<td>${e.name}</td>
+<td>${e.id}</td>
+<td>₹${e.salary.toLocaleString()}</td>
+<td>₹${e.bonus.toLocaleString()}</td>
+<td>₹${e.netPay.toLocaleString()}</td>
+<td><button class="actionBtn" onclick="removeEmployee(${index})">Delete</button></td>
+</tr>`;
+});
+
+document.getElementById("total").innerText = employees.length;
+
+const payroll = employees.reduce((sum,e)=>sum+e.netPay,0);
+document.getElementById("payroll").innerText = "₹" + payroll.toLocaleString();
+
+if(employees.length){
+const top = employees.reduce((a,b)=>a.netPay>b.netPay?a:b);
+document.getElementById("top").innerText = top.name;
+}else{
+document.getElementById("top").innerText = "-";
+}
+}
+</script>
+
+</body>
+</html>
